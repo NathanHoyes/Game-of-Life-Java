@@ -3,8 +3,8 @@ import java.awt.Rectangle;
 public class Cell extends Rectangle {
     private boolean isAlive;
 
-    public Cell(int x, int y, int width, int height, boolean isAlive) {
-        super(x, y, width, height);
+    public Cell(int x, int y, int size, boolean isAlive) {
+        super(x, y, size, size);
         setAlive(isAlive);
     }
 

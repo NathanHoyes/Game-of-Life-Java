@@ -2,10 +2,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CellClickListener extends MouseAdapter {
-    private final GameOfLife gol;
+    private final GameGridView gol;
     private final AnimateThread animate;
 
-    public CellClickListener(AnimateThread animate, GameOfLife gol) {
+    public CellClickListener(AnimateThread animate, GameGridView gol) {
         this.gol = gol;
         this.animate = animate;
     }

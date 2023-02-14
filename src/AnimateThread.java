@@ -1,9 +1,9 @@
 public class AnimateThread extends Thread{
-    GameOfLife gol;
+    GameGridView gol;
 
     private boolean running = false;
 
-    public AnimateThread(GameOfLife gol) {
+    public AnimateThread(GameGridView gol) {
         this.gol = gol;
 
     }
