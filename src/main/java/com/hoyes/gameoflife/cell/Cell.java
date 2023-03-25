@@ -1,3 +1,5 @@
+package main.java.com.hoyes.gameoflife.cell;
+
 import java.awt.Rectangle;
 
 public class Cell extends Rectangle {
@@ -28,7 +30,7 @@ public class Cell extends Rectangle {
      * Helpers
      */
     public void changeAlive() {
-        //System.out.printf("Cell at %s, %s was %s and is now %s%n", x/25, y/25, isAlive()?"Alive":"Dead", !isAlive()?"Alive":"Dead");
+        //System.out.printf("main.java.com.hoyes.gameoflife.cell.Cell at %s, %s was %s and is now %s%n", x/25, y/25, isAlive()?"Alive":"Dead", !isAlive()?"Alive":"Dead");
         setAlive(!isAlive);
     }
 }

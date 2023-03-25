@@ -1,12 +1,17 @@
+package main.java.com.hoyes.gameoflife.animate;
+
+import main.java.com.hoyes.gameoflife.grid.GridView;
+
 public class AnimateThread extends Thread{
-    GameGridView gol;
+    GridView gol;
 
     private boolean running = false;
 
-    public AnimateThread(GameGridView gol) {
+    public AnimateThread(GridView gol) {
         this.gol = gol;
-
     }
+    //TODO make these run depending on a boolean parameter on one constructor
+    //public AnimateThread(GridView gol, boolean )
 
     public void run() {
         while( true ) {

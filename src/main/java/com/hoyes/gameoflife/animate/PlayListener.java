@@ -1,3 +1,5 @@
+package main.java.com.hoyes.gameoflife.animate;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

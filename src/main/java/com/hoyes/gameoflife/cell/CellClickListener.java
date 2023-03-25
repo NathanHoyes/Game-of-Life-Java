@@ -1,11 +1,16 @@
+package main.java.com.hoyes.gameoflife.cell;
+
+import main.java.com.hoyes.gameoflife.animate.AnimateThread;
+import main.java.com.hoyes.gameoflife.grid.GridView;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CellClickListener extends MouseAdapter {
-    private final GameGridView gol;
+    private final GridView gol;
     private final AnimateThread animate;
 
-    public CellClickListener(AnimateThread animate, GameGridView gol) {
+    public CellClickListener(AnimateThread animate, GridView gol) {
         this.gol = gol;
         this.animate = animate;
     }
