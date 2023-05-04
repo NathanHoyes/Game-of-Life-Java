@@ -7,11 +7,14 @@ public class AnimateThread extends Thread{
 
     private boolean running = false;
 
-    public AnimateThread(GridView gol) {
+    public AnimateThread(GridView gol, boolean isRunning) {
         this.gol = gol;
+        running = isRunning;
     }
-    //TODO make these run depending on a boolean parameter on one constructor
-    //public AnimateThread(GridView gol, boolean )
+
+    public AnimateThread(GridView gol) {
+        this(gol, false);
+    }
 
     public void run() {
         while( true ) {

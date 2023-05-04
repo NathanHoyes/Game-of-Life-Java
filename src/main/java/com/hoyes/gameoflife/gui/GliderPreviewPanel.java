@@ -25,7 +25,7 @@ public class GliderPreviewPanel extends JPanel {
      */
 
     private GliderPreviewGrid makeGliderPreview(GridData grid) {
-        return new GliderPreviewGrid(200, 200, 3, grid.data());
+        return new GliderPreviewGrid(200, 200, grid.data());
     }
 
     private List<GliderPreviewGrid> getGliderPreviewsFromFile() {
@@ -35,7 +35,7 @@ public class GliderPreviewPanel extends JPanel {
             GliderPreviewGrid gPreview = makeGliderPreview(gridIO.nextGrid());
             this.add(gPreview);
             grids.add(gPreview);
-            AnimateThread animateThread = new AnimateThread(gPreview);
+            AnimateThread animateThread = new AnimateThread(gPreview, true);
             animateThread.start();
         }
         return grids;

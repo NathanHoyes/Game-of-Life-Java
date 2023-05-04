@@ -1,5 +1,6 @@
 package main.java.com.hoyes.gameoflife.grid;
 
+import main.java.com.hoyes.gameoflife.animate.AnimateThread;
 import main.java.com.hoyes.gameoflife.cell.Cell;
 import main.java.com.hoyes.gameoflife.initialiser.CellInitialiser;
 import main.java.com.hoyes.gameoflife.initialiser.DefaultCellInitialiser;
@@ -14,14 +15,13 @@ public class GridView extends JPanel {
     private final int xCells;
     private final int yCells;
     protected final Cell[][] cells;
+    private NeighbourCalculator neighbourCalculator = new NonWrappingNeighbourCalculator();
 
-    private int recenterFrequency;
-    private int frameCounter;
+    private final AnimateThread animateThread;
 
-    public GridView(int width, int height, int recenterFrequency) {
+    public GridView(int width, int height) {
         super();
-        this.recenterFrequency = recenterFrequency;
-        this.frameCounter = 0;
+        this.animateThread = new AnimateThread(this);
         this.xCells = width / cellSize;
         this.yCells = height / cellSize;
         this.cells = new Cell[xCells][yCells];
@@ -31,9 +31,11 @@ public class GridView extends JPanel {
         populateCells(new DefaultCellInitialiser());
     }
 
-    public GridView(int width, int height) {
-        this(width, height, 0);
+    public GridView(int width, int height, NeighbourCalculator neighbourCalculator) {
+        this(width, height);
+        this.neighbourCalculator = neighbourCalculator;
     }
+
 
     /*
      * Accessors
@@ -72,32 +74,6 @@ public class GridView extends JPanel {
         }
     }
 
-    public Rectangle calculateBoundingBox() {
-        int minX = cells.length;
-        int minY = cells[0].length;
-        int maxX = 0;
-        int maxY = 0;
-
-        for (int x = 0; x < cells.length; x++) {
-            for (int y = 0; y < cells[x].length; y++) {
-                if (cells[x][y].isAlive()) {
-                    minX = Math.min(minX, x);
-                    minY = Math.min(minY, y);
-                    maxX = Math.max(maxX, x);
-                    maxY = Math.max(maxY, y);
-                }
-            }
-        }
-
-        return new Rectangle(minX, minY, maxX - minX + 1, maxY - minY + 1);
-    }
-
-    public Point calculateCenterOffset(Rectangle boundingBox) {
-        int xOffset = (cells.length - boundingBox.width) / 2 - boundingBox.x;
-        int yOffset = (cells[0].length - boundingBox.height) / 2 - boundingBox.y;
-        return new Point(xOffset, yOffset);
-    }
-
     /*
      * Game Logic
      */
@@ -116,28 +92,13 @@ public class GridView extends JPanel {
         applyChanges(changes);
     }
 
-    public void applyChanges(ArrayList<Point> changes) {
-        if (recenterFrequency > 0 && frameCounter % recenterFrequency == 0) {
-            Rectangle boundingBox = calculateBoundingBox();
-            Point offset = calculateCenterOffset(boundingBox);
-            applyOffset(changes, offset);
-        }
-
+    public void applyChanges(List<Point> changes) {
         for (Point p : changes) {
             cells[p.x][p.y].changeAlive();
         }
-
-        frameCounter++;
     }
-    //TODO test this
-    public List<Point> applyOffset(List<Point> changes, Point offset) {
 
-        for (Point changedCell : changes) {
-            changedCell.x += offset.x;
-            changedCell.y += offset.y;
-        }
-        return changes;
-    }
+
 
     public boolean isChanged(int x, int y) {
         int neighbors = calculateNeighbors(x, y);
@@ -148,21 +109,9 @@ public class GridView extends JPanel {
     }
 
     public int calculateNeighbors(int x, int y) {
-        int neighbors = 0;
-        for (int x2 = x-1; x2 <= x + 1; x2 ++) {
-            for (int y2 = y-1; y2 <= y + 1; y2 ++) {
-                //System.out.printf("Neighbor at %s, %s ", x2, y2);
-                //Check for negative, out of bounds indexes and same cell.
-                if (x2 != -1 && y2 != -1 && x2 < cells.length && y2 < cells.length && (x2 != x || y2 != y)) {
-                    if (cells[x2][y2].isAlive()) {
-                        neighbors ++;
-                    }
-                }
-                //System.out.printf("is %s%n", cells[x2][y2].isAlive()?"Alive":"Dead");
-            }
-        }
-        return neighbors;
+        return neighbourCalculator.calculateNeighbours(cells, x, y);
     }
+
 
     /*
      * Graphics
